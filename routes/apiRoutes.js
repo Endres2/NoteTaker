@@ -3,20 +3,23 @@ const { readAndAppend, readFromFile,  writeToFile } = require('../helpers/fsUtil
 const { v4: uuidv4 } = require('uuid');
 const router = require('express').Router();
 
-
+//Route to get all notes
 router.get('/notes', (req, res) =>{
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
+//Route to create a new Note
 router.post('/notes', (req, res) =>{
-
+    
    const {title,text} = req.body;
    if(title && text){
+       //Creates a new object of Note
        const newNote = {
            title,
            text,
            id: uuidv4(),
            
        };
+       //Uses util folder to read an append new object
        readAndAppend(newNote, './db/db.json');
 
        const response = {
